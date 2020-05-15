@@ -1,0 +1,66 @@
+const express= require('express')
+const bodyParser = require('body-parser')
+const app = express()
+const mysql = require('mysql')
+
+var connection = mysql.createConnection({
+    host:'localhost',
+    user:'root',
+    password:'',
+    database:'test'
+})
+
+//display all products
+app.get('/disall/products/:id', (req, res) => {
+    let sql = "SELECT * FROM products WHERE products_id=123"+req.params.products_id;
+    let query = connection.query(sql, (err, results) => {
+      if(err) throw err;
+      res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
+    });
+  });
+
+  
+//display single product
+app.get('/dis/products/:id',(req, res) => {
+  let sql = "SELECT * FROM product WHERE product_id="+req.params.id;
+  let query = conn.query(sql, (err, results) => {
+    if(err) throw err;
+    res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
+  });
+});
+ 
+//inserting new product
+app.post('/add/products',(req, res) => {
+  let data = {products_id: req.body.products_id, products_name: req.body.products_name,products_price: req.body.products_price,products_availability: req.body.products_availability};
+  let sql = "INSERT INTO product SET ?";
+  let query = connection.query(sql, data,(err, results) => {
+    if(err) throw err;
+    res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
+  });
+});
+ 
+//update product
+app.put('/update/products/:id',(req, res) => {
+  let sql = "UPDATE product SET product_name='"+req.body.product_name+"', product_price='"+req.body.product_price+"' WHERE product_id="+req.params.id;
+  let query = connection.query(sql, (err, results) => {
+    if(err) throw err;
+    res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
+  });
+});
+ 
+//Delete product
+app.delete('/delete/products/:id',(req, res) => {
+  let sql = "DELETE FROM product WHERE products_id=123"+req.params.products_id+"";
+  let query = connection.query(sql, (err, results) => {
+    if(err) throw err;
+      res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
+  });
+});
+ 
+    
+app.listen(3000, () => {
+    console.log('Example app listening on port 3000!')
+  });
+
+
+
